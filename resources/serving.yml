@@ -1,0 +1,21 @@
+# Model Serving endpoint definition.
+#
+# NOT YET WIRED UP: this is a template, not a tested deployment. The source
+# notebook only ever provided Model Serving as a markdown guide (never
+# executable code) - see notebooks/10_model_deployment.py and README.md
+# "Model Serving" for what's still missing before this can be applied.
+
+resources:
+  model_serving_endpoints:
+    wind_turbine_failure_predictor:
+      name: ${var.serving_endpoint_name}
+      config:
+        served_entities:
+          - entity_name: ${var.registered_model_name}
+            entity_version: "1"  # update to the actual Champion version
+            workload_size: Small
+            scale_to_zero_enabled: true
+        traffic_config:
+          routes:
+            - served_model_name: ${var.registered_model_name}-1
+              traffic_percentage: 100

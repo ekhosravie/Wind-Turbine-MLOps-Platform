@@ -1,0 +1,12 @@
+# Fill in with your workspace's actual group/user names before deploying.
+# This is a template - Unity Catalog grants for the catalogs this project
+# creates (see configs/*.yml for the catalog name per environment).
+
+resources:
+  jobs:
+    wind_turbine_mlops_job:
+      permissions:
+        - level: CAN_MANAGE_RUN
+          group_name: data-engineering
+        - level: CAN_VIEW
+          group_name: data-science

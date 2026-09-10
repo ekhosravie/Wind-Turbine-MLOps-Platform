@@ -1,0 +1,55 @@
+resources:
+  jobs:
+    wind_turbine_mlops_job:
+      name: wind-turbine-mlops-pipeline
+      tasks:
+        - task_key: generate_data
+          notebook_task:
+            notebook_path: ../notebooks/01_generate_data.py
+        - task_key: bronze_ingestion
+          depends_on: [{task_key: generate_data}]
+          notebook_task:
+            notebook_path: ../notebooks/02_bronze_ingestion.py
+        - task_key: silver_transformation
+          depends_on: [{task_key: bronze_ingestion}]
+          notebook_task:
+            notebook_path: ../notebooks/03_silver_transformation.py
+        - task_key: gold_transformation
+          depends_on: [{task_key: silver_transformation}]
+          notebook_task:
+            notebook_path: ../notebooks/04_gold_transformation.py
+        - task_key: feature_engineering
+          depends_on: [{task_key: gold_transformation}]
+          notebook_task:
+            notebook_path: ../notebooks/05_feature_engineering.py
+        - task_key: model_training
+          depends_on: [{task_key: feature_engineering}]
+          notebook_task:
+            notebook_path: ../notebooks/06_model_training.py
+        - task_key: model_evaluation
+          depends_on: [{task_key: model_training}]
+          notebook_task:
+            notebook_path: ../notebooks/07_model_evaluation.py
+        - task_key: champion_selection
+          depends_on: [{task_key: model_evaluation}]
+          notebook_task:
+            notebook_path: ../notebooks/08_champion_selection.py
+        - task_key: model_registry
+          depends_on: [{task_key: champion_selection}]
+          notebook_task:
+            notebook_path: ../notebooks/09_model_registry.py
+        # model_deployment (10) intentionally not wired into the job:
+        # notebooks/10_model_deployment.py is a documented placeholder,
+        # not executable code yet - see README "Model Serving".
+        - task_key: batch_inference
+          depends_on: [{task_key: model_registry}]
+          notebook_task:
+            notebook_path: ../notebooks/11_batch_inference.py
+        - task_key: monitoring
+          depends_on: [{task_key: batch_inference}]
+          notebook_task:
+            notebook_path: ../notebooks/12_monitoring.py
+      schedule:
+        quartz_cron_expression: "0 0 3 * * ?"
+        timezone_id: UTC
+        pause_status: PAUSED
