@@ -1,0 +1,31 @@
+bundle:
+  name: wind-turbine-mlops
+
+include:
+  - resources/*.yml
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://<your-workspace>.cloud.databricks.com
+    variables:
+      config_file: configs/dev.yml
+
+  test:
+    mode: development
+    workspace:
+      host: https://<your-workspace>.cloud.databricks.com
+    variables:
+      config_file: configs/test.yml
+
+  prod:
+    mode: production
+    workspace:
+      host: https://<your-workspace>.cloud.databricks.com
+    variables:
+      config_file: configs/prod.yml
+
+# Deploy: databricks bundle deploy -t dev
+# Run:    databricks bundle run -t dev wind_turbine_mlops_job
