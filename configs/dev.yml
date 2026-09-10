@@ -1,0 +1,32 @@
+catalog: wind_turbine_ml_dev
+bronze_schema: bronze
+silver_schema: silver
+gold_schema: gold
+features_schema: features
+ml_schema: ml
+monitoring_schema: monitoring
+
+# Small config for fast iteration - see configs/prod.yml for full scale
+num_turbines: 10
+turbines_per_farm: 5
+num_farms: 2
+data_months: 1
+sensor_interval_minutes: 10
+random_seed: 42
+
+failure_rate: 0.05
+maintenance_rate: 0.10
+degradation_window_hours: 72
+prediction_horizon_hours: 24
+
+duplicate_rate: 0.01
+missing_rate: 0.02
+outlier_rate: 0.005
+sensor_drift_rate: 0.01
+
+minimum_recall: 0.80
+primary_metric: pr_auc
+
+experiment_name: /Shared/wind-turbine-failure-prediction-dev
+registered_model_name: wind_turbine_ml_dev.ml.turbine_failure_model
+serving_endpoint_name: wind-turbine-failure-predictor-dev
